@@ -1,5 +1,4 @@
-﻿// Script by Android Helper [Clicker Tutorial] //
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
@@ -26,6 +25,7 @@ public class Game : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("SV"))
         {
+            int totalBonusPS = 0;
             sv = JsonUtility.FromJson<Save>(PlayerPrefs.GetString("SV"));
             score = sv.score;
             for (int i = 0; i < shopItems.Count; i++)
@@ -33,8 +33,15 @@ public class Game : MonoBehaviour
                 shopItems[i].levelOfItem = sv.levelOfItem[i];
                 shopItems[i].bonusCounter = sv.bonusCounter[i];
                 if (shopItems[i].needCostMultiplier) shopItems[i].cost *= (int)Mathf.Pow(shopItems[i].costMultiplier, shopItems[i].levelOfItem);
-                if (shopItems[i].levelOfItem != 0) scoreIncrease += (int)Mathf.Pow(shopItems[i].bonusIncrease, shopItems[i].levelOfItem);
+                if (shopItems[i].bonusIncrease != 0 && shopItems[i].levelOfItem != 0) scoreIncrease += (int)Mathf.Pow(shopItems[i].bonusIncrease, shopItems[i].levelOfItem);
+                totalBonusPS += shopItems[i].bonusPerSec * shopItems[i].bonusCounter;
             }
+            DateTime dt = new DateTime(sv.date[0], sv.date[1], sv.date[2], sv.date[3], sv.date[4], sv.date[5]);
+            TimeSpan ts = DateTime.Now - dt;
+            int offlineBonus = (int)ts.TotalSeconds * totalBonusPS;
+            score += offlineBonus;
+            print("Вы отсутствовали: " + ts.Days + "Д. " + ts.Hours + "Ч. " + ts.Minutes + "М. " + ts.Seconds + "S.");
+            print("Ваши рабочие заработали: " + offlineBonus + "$");
         }
     }
 
@@ -101,18 +108,25 @@ public class Game : MonoBehaviour
         shopItems[shopItems[index].itemIndex].bonusPerSec /= 2; // Возвращаем бонус в нормальное состояние
         shopBttns[index].interactable = true; // Включаем кликабельность кнопки бонуса
     }
-
 #if UNITY_ANDROID && !UNITY_EDITOR
-    private void OnApplicationPause(){
-        Save();
-    }
-#endif
-    private void OnApplicationQuit()
+    private void OnApplicationPause(bool pause)
     {
-        Save();
+        if (pause)
+        {
+            sv.score = score;
+            sv.levelOfItem = new int[shopItems.Count];
+            sv.bonusCounter = new int[shopItems.Count];
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                sv.levelOfItem[i] = shopItems[i].levelOfItem;
+                sv.bonusCounter[i] = shopItems[i].bonusCounter;
+            }
+            sv.date[0] = DateTime.Now.Year; sv.date[1] = DateTime.Now.Month; sv.date[2] = DateTime.Now.Day; sv.date[3] = DateTime.Now.Hour; sv.date[4] = DateTime.Now.Minute; sv.date[5] = DateTime.Now.Second;
+            PlayerPrefs.SetString("SV", JsonUtility.ToJson(sv));
+        }
     }
-
-    public void Save()
+#else
+    private void OnApplicationQuit()
     {
         sv.score = score;
         sv.levelOfItem = new int[shopItems.Count];
@@ -122,9 +136,10 @@ public class Game : MonoBehaviour
             sv.levelOfItem[i] = shopItems[i].levelOfItem;
             sv.bonusCounter[i] = shopItems[i].bonusCounter;
         }
+        sv.date[0] = DateTime.Now.Year; sv.date[1] = DateTime.Now.Month; sv.date[2] = DateTime.Now.Day; sv.date[3] = DateTime.Now.Hour; sv.date[4] = DateTime.Now.Minute; sv.date[5] = DateTime.Now.Second;
         PlayerPrefs.SetString("SV", JsonUtility.ToJson(sv));
-        PlayerPrefs.Save();
     }
+#endif
 
     public void showShopPan() // Рассказывал в уроке #2
     {
@@ -176,5 +191,5 @@ public class Save
     public int score;
     public int[] levelOfItem;
     public int[] bonusCounter;
+    public int[] date = new int[6];
 }
-// End of script by Android Helper [Clicker Tutorial] //
