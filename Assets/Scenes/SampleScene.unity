@@ -277,7 +277,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 519420030}
-        m_MethodName: shopPan_ShowAndHide
+        m_MethodName: showShopPan
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -509,7 +509,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 519420030}
-        m_MethodName: HireWorker
+        m_MethodName: BuyBttn
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -612,7 +612,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 60
+    m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -674,15 +674,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1952021903}
-  shopCosts: 1400000078000000
-  shopBonuses: 02000000
-  bonusTime:
-  - 5
-  shopBttnsText:
+  shopItems:
+  - name: "\u041A\u0423\u041F\u0418\u0422\u042C \u0423\u041B\u0423\u0427\u0428\u0415\u041D\u0418\u0415"
+    cost: 20
+    bonusIncrease: 2
+    levelOfItem: 0
+    needCostMultiplier: 1
+    costMultiplier: 2
+    itsItemPerSec: 0
+    bonusPerSec: 0
+    bonusCounter: 0
+    itsBonus: 0
+    itemMultiplier: 0
+    itemIndex: 0
+    timeOfBonus: 0
+  - name: "\u041D\u0410\u041D\u042F\u0422\u042C \u0420\u0410\u0411\u041E\u0427\u0415\u0413\u041E"
+    cost: 120
+    bonusIncrease: 0
+    levelOfItem: 0
+    needCostMultiplier: 0
+    costMultiplier: 0
+    itsItemPerSec: 1
+    bonusPerSec: 1
+    bonusCounter: 0
+    itsBonus: 0
+    itemMultiplier: 0
+    itemIndex: 0
+    timeOfBonus: 0
+  - name: "\u041A\u0423\u041F\u0418\u0422\u042C \u041F\u0418\u0412\u041E \u0420\u0410\u0411\u041E\u0427\u0418\u041C"
+    cost: 2
+    bonusIncrease: 0
+    levelOfItem: 0
+    needCostMultiplier: 0
+    costMultiplier: 0
+    itsItemPerSec: 0
+    bonusPerSec: 0
+    bonusCounter: 0
+    itsBonus: 1
+    itemMultiplier: 2
+    itemIndex: 1
+    timeOfBonus: 5
+  shopItemsText:
   - {fileID: 1491587361}
   - {fileID: 498835212}
   - {fileID: 1152056515}
   shopBttns:
+  - {fileID: 575497377}
+  - {fileID: 412988928}
   - {fileID: 965508611}
   shopPan: {fileID: 1781195306}
 --- !u!20 &519420031
@@ -825,7 +863,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 519420030}
-        m_MethodName: shopBttn_addBonus
+        m_MethodName: BuyBttn
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1108,12 +1146,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 519420030}
-        m_MethodName: startBonusTimer
+        m_MethodName: BuyBttn
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1356,7 +1394,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 60
+    m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
