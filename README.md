@@ -1,2 +1,2 @@
 # Miners-Clicker
-Game in Android
+Game on Android
